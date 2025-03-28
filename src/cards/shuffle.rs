@@ -1,5 +1,4 @@
-use Card;
-
+use crate::Card;
 pub enum Shuffles {
     SplitShuffle,
 }
