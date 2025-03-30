@@ -35,8 +35,7 @@ pub fn play_blackjack(player_money: &mut i32, num_of_decks: u8) {
     let mut card_collection: Vec<Card> = generate_decks(num_of_decks);
     println!("Generating {} standard deck/s of 52 cards...", num_of_decks);
 
-    many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 3);
-    many_shuffles(&mut card_collection, Shuffles::RandShuffle, 100);
+    many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 23);
     println!("Shuffling cards...");
 
     //give each card its blackjack value and put in a tuple with this value, immersed in a vector
@@ -45,7 +44,7 @@ pub fn play_blackjack(player_money: &mut i32, num_of_decks: u8) {
     for card in &card_collection {
         match card.number {
             1..=10 => shoe.push((*card, card.number)),
-            11..=13 => shoe.push((*card, 10u8)),
+            11..=13 => shoe.push((*card, 10)),
             _ => panic!("Invalid cards present"),
         }
     }
@@ -100,8 +99,7 @@ fn play_round(player_money: &mut i32, shoe: &mut Vec<(Card, u8)>, num_of_decks: 
     fn reshuffle_deck(deck: &mut Vec<(Card, u8)>, num_of_decks: u8) {
         deck.clear();
         let mut card_collection: Vec<Card> = generate_decks(num_of_decks);
-        many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 5);
-        many_shuffles(&mut card_collection, Shuffles::RandShuffle, 100);
+        many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 23);
         for card in card_collection {
             match card.number {
                 1..=10 => deck.push((card, card.number)),
@@ -158,7 +156,7 @@ fn play_round(player_money: &mut i32, shoe: &mut Vec<(Card, u8)>, num_of_decks: 
                     card.0.display_card();
                 }
 
-                if let total = calculate_hand(&mut player_cards) > 21 {
+                if calculate_hand(&mut player_cards) > 21 {
                     println!("\nOver 21, you go bust");
                     return;
                 } else {
