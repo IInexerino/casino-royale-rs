@@ -1,6 +1,18 @@
 use crate::Card;
+
+use rand::Rng;
+
+
 pub enum Shuffles {
     SplitShuffle,
+    RandShuffle,
+}
+
+pub fn rand_shuffle(card_collection: &mut Vec<Card>) {
+    let mut rng = rand::thread_rng();
+    let first_random_index = rng.gen_range(0..card_collection.len());
+    let second_random_index = rng.gen_range(0..card_collection.len());
+    card_collection.swap(first_random_index, second_random_index)
 }
 
 pub fn split_shuffle(card_collection: &mut Vec<Card>) {
@@ -28,7 +40,8 @@ pub fn split_shuffle(card_collection: &mut Vec<Card>) {
 pub fn many_shuffles(card_collection: &mut Vec<Card>, shuffle_type: Shuffles, times: u8) {
     for _ in 1..=times {
         match shuffle_type {
-            Shuffles::SplitShuffle => split_shuffle(card_collection)
+            Shuffles::SplitShuffle => split_shuffle(card_collection),
+            Shuffles::RandShuffle => rand_shuffle(card_collection),
         }
     }
 }

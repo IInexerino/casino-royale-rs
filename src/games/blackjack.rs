@@ -35,7 +35,8 @@ pub fn play_blackjack(player_money: &mut i32, num_of_decks: u8) {
     let mut card_collection: Vec<Card> = generate_decks(num_of_decks);
     println!("Generating {} standard deck/s of 52 cards...", num_of_decks);
 
-    many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 5);
+    many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 3);
+    many_shuffles(&mut card_collection, Shuffles::RandShuffle, 100);
     println!("Shuffling cards...");
 
     //give each card its blackjack value and put in a tuple with this value, immersed in a vector
@@ -50,7 +51,7 @@ pub fn play_blackjack(player_money: &mut i32, num_of_decks: u8) {
     }
     //numbered card collection is now what we work with
     'menu: loop {
-        play_round(player_money, &mut shoe);
+        play_round(player_money, &mut shoe, num_of_decks);
         
         println!("\nWould you like to play another round (y) or exit to the main menu (n)?\n");
         loop {
@@ -100,6 +101,7 @@ fn play_round(player_money: &mut i32, shoe: &mut Vec<(Card, u8)>, num_of_decks: 
         deck.clear();
         let mut card_collection: Vec<Card> = generate_decks(num_of_decks);
         many_shuffles(&mut card_collection, Shuffles::SplitShuffle, 5);
+        many_shuffles(&mut card_collection, Shuffles::RandShuffle, 100);
         for card in card_collection {
             match card.number {
                 1..=10 => deck.push((card, card.number)),

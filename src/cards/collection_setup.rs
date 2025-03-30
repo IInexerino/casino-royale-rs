@@ -36,21 +36,12 @@ impl Card {
     }
 }
 
-pub fn generate_cards_of_a_suite(suite: CSuite, output_deck: &mut Vec<Card>) {
-    for n in 1u8..=13u8 {
-        let current_card = Card { number: n, suite: suite.clone() };
-        output_deck.push(current_card)
-
-        };
-}
-
 pub fn generate_decks(num_of_decks: u8) -> Vec<Card> {
-    let mut current_decks: Vec<Card> = Vec::new();
-    for _ in 1..=num_of_decks {
-        generate_cards_of_a_suite(CSuite::Hearts, &mut current_decks);
-        generate_cards_of_a_suite(CSuite::Clubs, &mut current_decks);
-        generate_cards_of_a_suite(CSuite::Diamonds, &mut current_decks);
-        generate_cards_of_a_suite(CSuite::Spades, &mut current_decks);
-    }
-    current_decks
+    (0..num_of_decks)
+        .flat_map(|_| {
+            [CSuite::Hearts, CSuite::Diamonds, CSuite::Clubs, CSuite::Spades]
+                .iter()
+                .flat_map(|&suite| (1..=13).map(move |n| Card { number: n, suite }))
+        })
+        .collect()
 }
